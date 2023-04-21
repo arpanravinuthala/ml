@@ -1,0 +1,44 @@
+#candidate elimination algorithm
+
+import pandas as pd
+import numpy as np
+import copy
+
+data1=pd.read_csv('C:\\Users\\exam2\\Desktop\\data1.csv')
+print(data1)
+G=[['?']*len(data1.loc[0])]*len(data1.loc[0])
+print(G)
+S=['']*len(data1.loc[0])
+print(S)
+
+
+def finds(l):
+    for i in range(len(l)):
+        if(l[i]==S[i] or S[i]==''):
+            S[i]=l[i]
+        else:
+            S[i]='?'
+
+def compare(l):
+    for i in range(len(l)):
+        if(l[i]!=S[i]):
+            a1=copy.deepcopy(G[i])
+            a1[i]=S[i]
+            G[i]=a1
+        
+for i in range(len(data1)):
+    l=[]
+    for j in range(len(data1.iloc[i])-1):
+            l.append(data1.iloc[i,j])
+    if(data1.iloc[i,-1]=='yes'):
+        finds(l)
+    else:
+        compare(l)
+G1=[]
+for i in S:
+    if i!='?':
+        for j in G:
+            if i in j:
+                G1.append(j)
+print("Specific Hypothesis",S)
+print("General Hypothesei",G1)
